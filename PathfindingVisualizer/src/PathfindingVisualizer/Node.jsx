@@ -7,7 +7,7 @@ export default class node extends Component {
         this.state = {
            col:0,
            row:0,
-           isWat:'node',
+           isWat:'',
            isStart: false,
            isGoal: false,
            
@@ -15,40 +15,53 @@ export default class node extends Component {
         this.handleClick = this.handleClick.bind(this)
         this.handleDoubleClick = this.handleDoubleClick.bind(this)
     }
+    componentDidMount(){
+        this.setState({isWat:this.props.node.isWat})
+    }
     handleClick(e){
         e.preventDefault();
         const status = this.state.isWat;
-        console.log("will it null " + this.props.startNode)
-        if(status === 'node'){
+        const row = this.props.row;
+        const col = this.props.col;
+        const node = this.props.node;
 
-        if(this.props.startNode !== null && this.props.goalNode !== null ){
+        console.log(this.state.isWat)
+        console.log(this.props.startNode)
+        if(status === 'node'){ //Node clicked-on is blank/free node
+
+            //Start node and Goal node are both already chosen
+        if(this.props.startNode !== null && this.props.goalNode !== null ){ 
             this.setState({isWat:'wallNode'})
-            this.props.incrementCount('node',this.props.row,this.props.col);
+            this.props.incrementCount('wallNode',node);
             return;
         }
-       else if( (this.props.goalNode === null && this.props.startNode === null) || (this.props.goalNode !== null && this.props.startNode === null)){
+        //either goal node and start node have yet to be chosen or goal node is chosen but the start node is blank
+        if( (this.props.goalNode === null && this.props.startNode === null) || (this.props.goalNode !== null && this.props.startNode === null)){
            this.setState({isWat:'startNode'});
-           this.props.incrementCount('startNode',this.props.row,this.props.col);
+           this.props.incrementCount('startNode',node);
            return;
         }
-        else if(this.props.goalNode === null && this.props.startnode !== null){
+        //only start node chosen 
+         if(this.props.goalNode === null && this.props.startNode !== null){
             this.setState({isWat:'goalNode'});
-            this.props.incrementCount('goalNode',this.props.row,this.props.col);
+           
+            this.props.incrementCount('goalNode',node);
             return;
         }
         
        
     }
-    if(status !== 'node'){
-        this.props.decrementCount(this.state.isWat,0,0);
+    if(status !== 'node'){ //Node clicked-on is already defined as Start,goal, or wall node
+        this.props.decrementCount(this.state.isWat,this.props.node);
         this.setState({isWat:'node'});
+        
         return;
     }
     }
         handleDoubleClick(e){
             e.preventDefault();
             const status = this.state.isWat;
-            this.setState({isWat:"hello"});
+           
            
             if(status === 'node'){
                this.setState({isWat:'node-goal'});
@@ -62,10 +75,7 @@ export default class node extends Component {
     
     }
     render(){
-        const test = this.props.row;
-        
-        
-        
-        return <div className={`node ${this.state.isWat}`} onDoubleClick={this.handleDoubleClick} onClick = {this.handleClick}></div>;
+       
+        return <div className={`node ${this.state.isWat}`}  onClick={this.handleClick}></div>;
     }
 }

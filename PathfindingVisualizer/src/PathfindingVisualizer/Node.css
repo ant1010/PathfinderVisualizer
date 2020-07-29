@@ -28,5 +28,9 @@
     background: black;
 }
 .goalNode {
+    width: 25px;
+    height: 25px;
+    outline: 1px solid black;
+    display: inline-block;
     background: red;
 }
