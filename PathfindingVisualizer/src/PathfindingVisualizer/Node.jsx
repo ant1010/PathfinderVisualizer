@@ -11,13 +11,37 @@ export default class node extends Component {
            isStart: false,
            isGoal: false,
            
+           
         };
         this.handleClick = this.handleClick.bind(this)
         this.handleDoubleClick = this.handleDoubleClick.bind(this)
     }
+
     componentDidMount(){
-        this.setState({isWat:this.props.node.isWat})
+       // this.setState({isWat:this.props.node.isWat})
+       this.setState({isWat:this.props.isWat})
+       
+        
+        
+           
+        
     }
+    // static getDerivedStateFromProps(nextprop,prevState){
+
+   
+    //    nextprop.pathList.forEach((node,i) => {
+    //       if(prevState.isWat != node.isWat){
+    //           console.log("anything");
+    //         return {isWat:"pathNode"};
+    //     }
+    //     else{
+    //         return null;
+    //     }
+    //     })
+     
+    
+    
+    //}
     handleClick(e){
         e.preventDefault();
         const status = this.state.isWat;
@@ -76,6 +100,6 @@ export default class node extends Component {
     }
     render(){
        
-        return <div className={`node ${this.state.isWat}`}  onClick={this.handleClick}></div>;
+        return <div className={`node ${this.props.node.isWat}`}  onClick={this.handleClick}>{this.props.node.id}</div>;
     }
 }
