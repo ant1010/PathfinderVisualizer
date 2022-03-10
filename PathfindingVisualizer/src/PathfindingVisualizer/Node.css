@@ -1,44 +1,119 @@
 
 .node {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     display: inline-block;
     margin: 1px;
-    /*border-radius:50%;*/
-    background-color:#bbb;
+    border-radius:50%;
+    outline: .5px solid rgba(38, 230, 255, 0.897);
+    background-color:black;
+    color: white;
+    font-size: 10px;
+    
     
 }
+@keyframes pulse {
+    0% {
+        outline: .5px solid rgba(38, 230, 255, 0.897); 
+    }
+    100% {
+        outline: 2px solid rgba(158, 239, 250, 0.897);  
+    }
+}
+.node:hover{
+    width: 18px;
+    height: 18px;
+    border-radius:100%;
+    padding-bottom: 1px;/*3px*/
+    background-color: rgb(178, 196, 207);
+    outline: .5px solid rgba(38, 230, 255, 0.897);
+
+}
+
 .boxNode{
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     outline: 1px solid black;
     display: inline-block;
 }
 .startNode {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     outline: 1px solid black;
     display: inline-block;
-    background: yellowgreen;
+    background: rgb(29, 247, 0);
 }
 .wallNode {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
+    border-radius: 0%;
     outline: 1px solid grey;
     display: inline-block;
-    background: black;
+    background: rgba(38, 230, 255, 0.897);
 }
 .goalNode {
-    width: 25px;
-    height: 25px;
+    width: 18px;
+    height: 18px;
     outline: 1px solid black;
     display: inline-block;
-    background: red;
+    background: rgb(240, 2, 2);
+}
+.progressPathNode{
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    border-radius: 50px;
+
+    background: rgba(145, 51, 233, 0.897);
+    animation: 
+    pulse2
+    1s
+    ease-out
+    1.2s
+    alternate
+    infinite
+    none
+    running;
+}
+@keyframes pulse2 {
+    0% {
+        outline: 1px solid rgba(14, 17, 19, 0.897); 
+    }
+    50%{
+        outline: 2px solid rgba(38, 230, 255, 0.897); 
+    }
+    100% {
+        outline: 3px solid rgba(17, 109, 121, 0.897);  
+    }
+    
 }
 .pathNode {
-    width: 25px;
-    height: 25px;
-    outline: 1px solid white;
+    width: 18px;
+    height: 18px;
     display: inline-block;
-    background: #78b7ca;
+    border-radius: 50px;
+    background: rgba(208, 255, 0, 0.897);
+    
+    animation: 
+    pulse1
+    1s
+    ease-out
+    1.2s
+    alternate
+    infinite
+    none
+    running;
+    
+}
+@keyframes pulse1 {
+    0% {
+        outline: 2px solid rgba(14, 17, 19, 0.897); 
+    }
+    50%{
+        outline: 8px solid rgba(228, 235, 236, 0.897); 
+    }
+    100% {
+        outline: 5px solid rgba(17, 109, 121, 0.897);  
+    }
+    
 }

@@ -18,8 +18,12 @@ export default class PathfinderAlgorithms  extends Component{
         this.setState({Data:this.props.gridData});
         
     }
-    handleClick = () =>{
-        if(this.props.gridData){
+    handleClick = value => () =>{
+        if(value == 'reset'){
+            this.props.clearGrid();
+            return;
+
+        }else if(this.props.gridData){
        this.setState({Data:this.props.gridData});
        
        
@@ -34,7 +38,7 @@ export default class PathfinderAlgorithms  extends Component{
     const goalNode = this.props.goalNode;
     const startNode = this.props.startNode;
     const Q = [];
-    const dist = Array(400).fill(Number.MAX_VALUE);
+    const dist = Array(900).fill(Number.MAX_VALUE);
     const S = Array(0).fill(0);
     Q.push([startNode,0]);
     
@@ -50,7 +54,12 @@ export default class PathfinderAlgorithms  extends Component{
             
         }
         adj.forEach(node => {
-            if(node[1] >= 0 && node[1] <400){
+            
+           
+            if(node[1] >= 0 && node[1] < 900){
+                if(this.props.grid[node[1]].isWat == 'wallNode'){
+                    return;
+                }
                 let time = null;
                 if(node[0] == "diagonal"){
                     let time = dist[current] + 1.4;
@@ -60,9 +69,13 @@ export default class PathfinderAlgorithms  extends Component{
                 if(time < dist[node[1]]){
                     dist[node[1]] = time;
                     S[node[1]] = current;
+                    Q.push([node[1],time]); 
                     
+                    setTimeout(() => { 
+                        const tmp = [current];
+                        let setPath = this.generateProgressPath(tmp);
+                        this.props.onWallChange(setPath); }, 0);
                     
-                    Q.push([node[1],time]);
                 }
             }
            
@@ -95,28 +108,28 @@ export default class PathfinderAlgorithms  extends Component{
         
         let adj = [];
         
-        adj[0] = ["above",current-20];
+        adj[0] = ["above",current-30];
         
         
-        adj[1] = ["below",current+20];
+        adj[1] = ["below",current+30];
         
         
 
-        if(19%current != 19 || current != 19){
+        if(29%current != 29 || current !=29){
             adj[2] = ["right",current+1];
-            adj[7] = ["diagonal",current-19];
-            adj[4] = ["diagonal",current+21];
+            adj[7] = ["diagonal",current-29];
+            adj[4] = ["diagonal",current+31];
         }
-        if(current%20 != 0 ){
+        if(current%30 != 0 ){
             adj[3] = ["left",current-1];
-            adj[6] = ["diagonal",current-21];
-            adj[5] = ["diagonal",current+19];
+            adj[6] = ["diagonal",current-31];
+            adj[5] = ["diagonal",current+29];
         }
         let other = JSON.parse(JSON.stringify(adj));
         //Diagonal
        let progressPath = []; 
        adj.forEach(node => {
-           if(node[1] >=0 && node[1] < 400){
+           if(node[1] >=0 && node[1] < 900){
                progressPath.push(node[1]);
            }
             });
@@ -144,9 +157,10 @@ export default class PathfinderAlgorithms  extends Component{
         return (
            
             <div>
-                <button class = "button" onClick={this.handleClick} > this a button 
+                <button class = "button" onClick={this.handleClick('Dijkstra')} > Dijkstra
                 </button>
-                
+                <button class = "button" onClick={this.handleClick('reset')} > Reset
+                </button>
               
                
             </div>

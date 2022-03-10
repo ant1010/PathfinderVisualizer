@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component,useEffect} from 'react';
 import './Node.css';
 
 export default class node extends Component {
@@ -8,42 +8,50 @@ export default class node extends Component {
            col:0,
            row:0,
            isWat:'',
-           isStart: false,
            isGoal: false,
            
            
         };
         this.handleClick = this.handleClick.bind(this)
-        this.handleDoubleClick = this.handleDoubleClick.bind(this)
+        
+        
     }
 
     componentDidMount(){
        // this.setState({isWat:this.props.node.isWat})
-       this.setState({isWat:this.props.isWat})
-       
-        
-        
-           
+       this.setState({isWat:this.props.isWat});
         
     }
-    // static getDerivedStateFromProps(nextprop,prevState){
+    handleMouseDown = (node) =>
+    {
+        
+       //node.preventDefault;
+       
+       this.props.handleMouseDown(node);
+    
+        
 
-   
-    //    nextprop.pathList.forEach((node,i) => {
-    //       if(prevState.isWat != node.isWat){
-    //           console.log("anything");
-    //         return {isWat:"pathNode"};
-    //     }
-    //     else{
-    //         return null;
-    //     }
-    //     })
-     
-    
-    
-    //}
-    handleClick(e){
-        e.preventDefault();
+    }
+    handleMouseUp = (e) => 
+    {
+        
+        
+       
+        this.props.handleMouseUp();
+        
+        
+        
+
+    }
+    handleMouseEnter = (node) => 
+    {
+       console.log("node_mouseneter");
+        this.props.handleMouseEnter(node);
+    }
+
+    handleClick = (e)=> {
+        
+       console.log("click_node");
         const status = this.state.isWat;
         const row = this.props.row;
         const col = this.props.col;
@@ -72,34 +80,19 @@ export default class node extends Component {
             this.props.incrementCount('goalNode',node);
             return;
         }
-        
-       
     }
+        
     if(status !== 'node'){ //Node clicked-on is already defined as Start,goal, or wall node
         this.props.decrementCount(this.state.isWat,this.props.node);
         this.setState({isWat:'node'});
         
         return;
     }
+    console.log(current);
     }
-        handleDoubleClick(e){
-            e.preventDefault();
-            const status = this.state.isWat;
-           
-           
-            if(status === 'node'){
-               this.setState({isWat:'node-goal'});
-               this.props.incrementCount();
-            }
-            if(status !== 'node'){
-                this.setState({isWat:'node'});
-                this.props.decrementCount();
-               
-            }
-    
-    }
+   
     render(){
-       
-        return <div className={`node ${this.props.node.isWat}`}  onClick={this.handleClick}>{this.props.node.id}</div>;
+       const node = this.props.node;
+        return <div className={`node ${this.props.node.isWat}`}   onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}></div>;
     }
 }

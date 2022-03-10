@@ -1,14 +1,18 @@
 .grid {
-   width:550px;
+
+  width:600px;
+ 
   display:block;
-  margin-left:auto;
-  margin-right:auto;
-   
+  
+  
+  outline: 8px solid rgba(38, 230, 255, 0.897);
+  background-color: rgb(4, 76, 124);
+  
     
 }
 .grid-row {
   
-    margin: -3px;
+    margin: 30px;
     
 }
 .uyr{
@@ -18,23 +22,23 @@
     display:inline-block;
     padding:0.5em 3em;
     border:0.16em solid #FFFFFF;
-    margin:0 0.3em 0.3em 0;
+    margin:2% 0.3em 0.3em 0;
     box-sizing: border-box;
     text-decoration:none;
     text-transform:uppercase;
     font-family:'Roboto',sans-serif;
     font-weight:400;
-    color:black;
+    color:rgba(38, 230, 255, 0.897);
     text-align:center;
     transition: all 0.15s;
-    background-color: #FFFFFF;
-    border-color:black;
+    background-color: black;
+    border-color:rgba(38, 230, 255, 0.897);
        }
     .button:hover{
-    color: white;
-    border-color:white;
-    border-radius: 5px;
-    background-color:rgb(86, 151, 153);
+    color: rgb(4, 76, 124);
+    border-color:rgb(4, 76, 124);
+    border-radius: 8px;
+    background-color:rgba(38, 230, 255, 0.897);
     }
     .button:active{
         color:black;

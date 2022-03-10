@@ -3,10 +3,18 @@ import Node from './Node'
 import PathfinderAlgorithms from './PathfinderAlgorithms'
 import './PathfindingVisualizer.css';
 
-const INITIAL_START_COL = 1;
-const INITIAL_START_ROW = 10;
-const INITIAL_GOAL_COL = 19;
-const INITIAL_GOAL_ROW = 10;
+
+const initialState = {
+    grid: [],
+    coloredNodeCount: 0,
+    goalNode: null,
+    startNode: null,
+    wallNode:null,
+    wallMouseEvent: false,
+    pathList :[ {}],
+    gridData: {goalNode:{row:0,col:0},startNode:{row:0,col:0},wallNode:[{}],}
+}
+
 
 export default class PathfindingVisualizer extends Component {
     constructor(props){
@@ -14,27 +22,83 @@ export default class PathfindingVisualizer extends Component {
         this.state = {
             grid: [],
             coloredNodeCount: 0,
+            select: "false",
             goalNode: null,
             startNode: null,
             wallNode:null,
-            pathList :[ {col: 6, id:128,isWat:'node',row:8}],
-            gridData: {goalNode:{row:0,col:0},startNode:{row:0,col:0},wallNode:[{col: 6, id:128,isWat:'node',row:8}],}
+            pathList :[ {}],
+            gridData: {goalNode:{row:0,col:0},startNode:{row:0,col:0},wallNode:[{}],}
         };
-        this.handlenodeClick = this.handlenodeClick.bind(this);
+       
         this.incrementColoredNodeCount = this.incrementColoredNodeCount.bind(this);
         this.decrementColoredNodeCount = this.decrementColoredNodeCount.bind(this);
         this.updateGoalStartNode = this.updateGoalStartNode.bind(this);
         
     }
-    
-    setPathNodes (nodes){
-        const pathnodes = nodes;//[ {col: 6, id:128,isWat:'node',row:8},{col: 6, id:127,isWat:'node',row:8},{col: 7, id:126,isWat:'node',row:8},{col: 8, id:125,isWat:'node',row:8}]
+    clearState = () =>{
+       this.setState({...initialState});
+       const grid = getInitialGrid();
+        this.setState({grid})
+    }
+    handleMouseDown = (node) =>
+    {
+        
+       //node.preventDefault;
+       console.log("pfv_mousedown");
+      this.setState({wallMouseEvent:true});
+        
+
+    }
+    handleMouseUp = (e) => 
+    {
+        
+        if(this.state.wallMouseEvent === true){
+            this.setState({wallMouseEvent:false});
+            console.log("pfv_mousedoup");
+        }
+        
+        
+
+    }
+    handleMouseEnter = (node) => 
+    {
+        
+        if(this.state.wallMouseEvent == true){
+             console.log("pfv_moseenter");
+             console.log(node);
+             const tempNode = node;
+             tempNode.isWat = "wallNode";
+             this.setState({
+                grid: [
+                   ...this.state.grid.slice(0,node.id),
+                   Object.assign({}, this.state.grid[node.id], tempNode),
+                   ...this.state.grid.slice(node.id+1)
+                ]
+              });
+        }
+    }
+        
+            
+        
        
+        
+
+    
+   
+    setPathNodes (nodes){
+        const pathnodes = nodes;
        
         for(let i = 0; i < pathnodes.length;++i){
          const tempNode = this.state.grid[pathnodes[i].id];
-        
-         tempNode.isWat = "pathNode";
+         if(tempNode.isWat != "node"){
+             continue;
+         }
+        if(pathnodes.length > 1){
+            tempNode.isWat = "pathNode";
+        }else{
+            tempNode.isWat = "progressPathNode";
+        }
+         
          
          this.setState({
             grid: [
@@ -55,15 +119,10 @@ export default class PathfindingVisualizer extends Component {
         
         const grid = getInitialGrid();
         this.setState({grid})
-        const nodes = []
+   
         
     }
-    handlenodeClick(e)
-    {
-        e.preventDefault()
-        
-
-    }
+   
     rNDOM(){
         return true;
     }
@@ -81,25 +140,18 @@ export default class PathfindingVisualizer extends Component {
             ]
           });
         if(nodeType !== "wallNode"){
-         
-            const nodeLocation = node;
-          
             this.setState({[nodeType]:node.id})
-         
            
         }  
         if(nodeType == "wallNode")
-        {
-            
+        { 
            this.setState(prevState => ({
                gridData: {
                    ...prevState.gridData,
                    [nodeType]:this.state.gridData.wallNode.concat([node])
                }
            }))
-          
         }
-      
     }
     decrementColoredNodeCount(nodeType,node){
         
@@ -146,8 +198,7 @@ console.log(this.state.gridData.wallNode)
         
     }
     handleWallChange = nodes => {
-       // this.setState({startNode:nodes.wallNode[1]});
-       
+     
        this.setPathNodes(nodes); 
       this.setState(prevState => ({
         gridData: {
@@ -158,7 +209,6 @@ console.log(this.state.gridData.wallNode)
       
     }
 
-
     render() {
         const { grid } = this.state;
         const isStart = false;
@@ -166,15 +216,15 @@ console.log(this.state.gridData.wallNode)
         const testData1 = this.state.startNode;
         const gridD = this.state.gridData;
 
-   
-
         return (
             <div id="tag">
              
-                <div className="grid">
+                <div className="grid"  onMouseDown = {this.handleMouseDown} onMouseUp = {this.handleMouseUp} >
                    
                     {/* {grid.map((row, rowIdx) => {
                         return <div className="grid-row" >
+                       
+                         onMouseDown={ this.handleMouseDown()} onMouseUp={this.handleMouseUp()} onMouseEnter={  this.handleMouseEnter()}
                             {row.map((node, nodeIdx) =>
                                 <Node
                                     node = {node}
@@ -194,11 +244,22 @@ console.log(this.state.gridData.wallNode)
                         </div>
                     })} */}
 
-                    {grid.map((node,id) => {return <Node grid = {this.state.grid} goalNode={this.state.goalNode} decrementCount={this.decrementColoredNodeCount.bind(this)}
-                                    incrementCount={this.incrementColoredNodeCount.bind(this)}node = {node}startNode={this.state.startNode} isWat = {node.isWat}></Node>})}
+
+
+                    {grid.map((node,id) => { return <Node 
+                    handleMouseDown = {this.handleMouseDown}
+                    handleMouseEnter = {this.handleMouseEnter}
+                    handleMouseUp = {this.handleMouseUp}
+                    grid = {this.state.grid} 
+                    goalNode={this.state.goalNode} 
+                    decrementCount={this.decrementColoredNodeCount.bind(this)}
+                    incrementCount={this.incrementColoredNodeCount.bind(this)}
+                    node = {node}startNode={this.state.startNode} 
+                    isWat = {node.isWat}>
+                    </Node>})}
 
                 </div>
-                <div><PathfinderAlgorithms  grid = {this.state.grid} startNode = {this.state.startNode} goalNode = {this.state.goalNode}onWallChange = {this.handleWallChange} testData={testData1}></PathfinderAlgorithms></div>
+                <div><PathfinderAlgorithms  grid = {this.state.grid} startNode = {this.state.startNode} goalNode = {this.state.goalNode}clearGrid = {this.clearState}onWallChange = {this.handleWallChange} ></PathfinderAlgorithms></div>
             </div>
 
         )
@@ -208,9 +269,9 @@ console.log(this.state.gridData.wallNode)
 const getInitialGrid = () => {
     const nodeGrid = []
     let id = 0
-    for (let row = 0; row < 20; row++) {
+    for (let row = 0; row < 30; row++) {
         //const currentRow = [];
-        for (let col = 0; col < 20; ++col) {
+        for (let col = 0; col < 30; ++col) {
            // currentRow.push(createNode(col, row, id));
            nodeGrid.push(createNode(col, row, id));
             id++
@@ -224,15 +285,8 @@ const getInitialGrid = () => {
    
 };
 const createNode = (col,row, id) => {
-    if(id == 5){
-        return {
-            row,
-            col,
-            isWat:'pathNode',
-            id,
-            
-        }
-    }
+   
+    
     return {
         row,
         col,
