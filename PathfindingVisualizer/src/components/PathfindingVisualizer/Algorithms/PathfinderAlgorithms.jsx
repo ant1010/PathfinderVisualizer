@@ -96,7 +96,7 @@ export default class PathfinderAlgorithms  extends Component{
          
      }
      if(foundPath == "false"){
-        this.handleToggle();
+        this.handlePopup();
          return;
      }
         const path = [goalNode];
@@ -149,23 +149,11 @@ export default class PathfinderAlgorithms  extends Component{
 
 
         let other = JSON.parse(JSON.stringify(adj));
-        
-    //    let progressPath = []; 
-    //    adj.forEach(node => {
-    //        if(node[1] >=0 && node[1] < nodeCount){
-    //            progressPath.push(node[1]);
-    //        }
-    //         });
-        
-    //   const p = this.generateProgressPath(progressPath);
-       
-    //   this.props.onWallChange(p); 
-       
 
         
                 return adj;
     }
-   handleToggle =()=> {
+   handlePopup =()=> {
         this.setState({
          seen: !this.state.seen
         });
@@ -178,11 +166,6 @@ export default class PathfinderAlgorithms  extends Component{
            
             <div>
 
-
-
-              
-
-
                 <button className = "button" onClick={this.handleClick('Dijkstra')} > Dijkstra
                 </button>
                 <button className = "button" onClick={this.handleClick('reset')} > Clear
@@ -190,12 +173,12 @@ export default class PathfinderAlgorithms  extends Component{
                 {this.state.seen ? <div className="modal">
         <div className="modal_content">
         
-          <span className="close" onClick={this.handleToggle}>
+          <span className="close" onClick={this.handlePopup}>
 
             &times;
             
           </span>
-           <h1>Goal node unreachable:( </h1>
+           <h1>Goal node is unreachable 😰 </h1>
           </div>
          
           </div>  : null}
