@@ -1,9 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import PathfindingVisualizer from './components/PathfindingVisualizer/PathfindingVisualizer';
+import Header from './components/layout/Header';
+import Footer from './components/layout/Footer';
 import './index.css';
 
 ReactDOM.render(
-  <App />,
+  <div>
+   <Header/>
+   <PathfindingVisualizer/>
+ </div>,
+
   document.getElementById('root')
 );

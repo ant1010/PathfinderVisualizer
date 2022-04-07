@@ -48,7 +48,12 @@ export default class node extends Component {
        console.log("node_mouseneter");
         this.props.handleMouseEnter(node);
     }
-
+     update(){
+        
+         if(this.state.isWat != "pathNode"){
+        this.setState({isWat:'progressPathNode'});
+         }
+     }
     handleClick = (e)=> {
         
        console.log("click_node");
@@ -93,6 +98,6 @@ export default class node extends Component {
    
     render(){
        const node = this.props.node;
-        return <div className={`node ${this.props.node.isWat}`}   onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}></div>;
+        return <div className={`node ${node.isWat}`}  id = {this.props.node.id} onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}></div>;
     }
 }
