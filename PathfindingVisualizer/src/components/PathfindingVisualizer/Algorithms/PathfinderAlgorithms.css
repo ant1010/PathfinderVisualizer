@@ -23,41 +23,20 @@
     .button:active{
         color:black;
         border-color:#BBBBBB;
+        
+        
     }
-    @media all and (max-width:30em){
-         .button{
-        display:block;
-        margin:0.4em auto;}}
-
-        .modal {
-            
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.25);
-          }
-          
-          .modal_content {
-            background-color: rgb(0, 0, 0);
-            position: absolute;
-            top: 20%;
-            left: 30%;
-            width: 40%;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid black;
-            color: rgba(38, 230, 255, 0.897);
-            font-style: oblique;
-            font-size: 12px;
-          }
-          
-          .close {
-            color: rgb(91, 203, 211);
-            font-size: 25px;
-            float: right;
-          }
-          
-          .close:hover {
-            color: cyan;
-            cursor: pointer;
-          }
-          
+    .button_maze{
+      color: rgb(4, 76, 124);
+      border-color:rgb(4, 76, 124);
+      border-radius: 8px;
+      background-color:rgba(38, 230, 255, 0.897);
+      }
+      .button_info{
+        border-radius: 100%;
+        padding:0.5em 0;
+        border:0.16em solid #FFFFFF;
+       width: 35px;
+       height: 35px;
+       
+        }

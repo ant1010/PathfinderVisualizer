@@ -9,6 +9,7 @@ ReactDOM.render(
   <div>
    <Header/>
    <PathfindingVisualizer/>
+  
  </div>,
 
   document.getElementById('root')

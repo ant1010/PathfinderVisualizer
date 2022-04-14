@@ -45,7 +45,7 @@ export default class node extends Component {
     }
     handleMouseEnter = (node) => 
     {
-       console.log("node_mouseneter");
+      
         this.props.handleMouseEnter(node);
     }
      update(){
@@ -56,14 +56,13 @@ export default class node extends Component {
      }
     handleClick = (e)=> {
         
-       console.log("click_node");
+      
         const status = this.state.isWat;
         const row = this.props.row;
         const col = this.props.col;
         const node = this.props.node;
 
-        console.log(this.state.isWat)
-        console.log(this.props.startNode)
+        
         if(status === 'node'){ //Node clicked-on is blank/free node
 
             //Start node and Goal node are both already chosen
@@ -93,11 +92,12 @@ export default class node extends Component {
         
         return;
     }
-    console.log(current);
+   
     }
    
     render(){
        const node = this.props.node;
+       
         return <div className={`node ${node.isWat}`}  id = {this.props.node.id} onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}></div>;
     }
 }

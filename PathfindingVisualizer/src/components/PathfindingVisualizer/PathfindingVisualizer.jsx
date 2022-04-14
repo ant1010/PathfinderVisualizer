@@ -8,7 +8,6 @@ import './PathfindingVisualizer.css';
 
 const initialState = {
     grid: [],
-    coloredNodeCount: 0,
     goalNode: null,
     startNode: null,
     wallNode:null,
@@ -24,10 +23,9 @@ export default class PathfindingVisualizer extends Component {
         this.state = {
             grid: [],
             select: "false",
-            goalNode: null,
+            goalNode: null ,
             startNode: null,
-            wallNode:null,
-            pathList :[ {}],
+            wallNode:[],
             gridWidth: 800,
             gridHeight:460,
             
@@ -42,20 +40,54 @@ export default class PathfindingVisualizer extends Component {
         this.handleprogressAnimation = this.handleprogressAnimation.bind(this);
         
     }
+    componentDidMount(){
+        
+        window.addEventListener("resize", this.resize.bind(this));
+        this.resize();
+        let dim = this.setDimensions();
+        let row = dim[0];
+        let col = dim[1];
+        const grid = getInitialGrid(row,col);
+        this.setState({grid})
+        
+       
+    }
 
-    clearState = () =>{
+    clearState = (exception) =>{
+        
         let i = this.state.grid.length-1;
-        while(i > 0){
-            document.getElementById(i).className = 'node node';
+        const grid_copy = this.state.grid.slice();
+        while(i > 1){
+           
+            if(exception === "keep Maze" ){
+                this.setState({ goalNode: null });
+                this.setState({ startNode: null });
+                if( grid_copy[i].isWat !== "wallNode"){
+                    grid_copy[i].isWat = "node";
+                    i--;
+                }else{
+                    i--;
+                }
+            
+            }else{
+               
+                grid_copy[i].isWat = "node";
             i--;
+           
+            }
+          
         }
+        console.table(grid_copy);
+        this.setState({ grid: grid_copy });
+       
+        if(exception !== "keep Maze" ){
        this.setState({...initialState});
        let dim = this.setDimensions();
         let row = dim[0];
         let col = dim[1];
        const grid = getInitialGrid(row,col);
         this.setState({grid})
-
+        }
     }
 
     handleMouseDown = (node) =>
@@ -74,10 +106,11 @@ export default class PathfindingVisualizer extends Component {
     handleMouseEnter = (node) => 
     {
         
-        if(this.state.wallMouseEvent == true){
+        if(this.state.wallMouseEvent == true && this.state.startNode !== null){
         
              const tempNode = node;
              tempNode.isWat = "wallNode";
+             
              this.setState({
                 grid: [
                    ...this.state.grid.slice(0,node.id),
@@ -89,60 +122,83 @@ export default class PathfindingVisualizer extends Component {
     }
      
    
-async handleprogressAnimation(pathprogessList,pathNodes){
+    async handleprogressAnimation(pathprogessList,pathNodes){
     
-  await this.updateprogressPath(pathprogessList,pathNodes);
-  this.animationID = window.requestAnimationFrame(() =>  this.setPathNodes(pathNodes));
+              await this.updateprogressPath(pathprogessList);
+             //call to display final shortest path
+             this.animationID = window.requestAnimationFrame(() =>  this.setPathNodes(pathNodes));
   
     }
 
-    updateprogressPath(List,pathNodes){
+    updateprogressPath(List) {
         //need ref components list
-       // this.nodeRefs.current.map((component,i) => component.current.update());
-       return new Promise((resolve) => {  let c = 10 ;
-        while(List.length > 0 ){
-            let tmp = List.shift();
-           // this.nodeRefs.current[tmp.id].current.update();
-           
-          const id =  setInterval(() =>{  
-               if(tmp.isWat != 'pathNode' && tmp.isWat != 'startNode' ){
-             this.nodeRefs.current[tmp.id].current.update()
-             
-             document.getElementById(tmp.id).className = 'node progressPathNode';
-             if(List.length < 1){
-                 
-                 clearInterval(id);
-             }
-               }
-         
-            },1000);
-           
-           }
- 
-           //}
-            // this.nodeRefs.current[tmp.id].current.update();
-           
-             
-           //this.setPathNodes(tmp);
-          //
-           //return;
-       
-      
-        setTimeout(resolve, 1000);
+        // this.nodeRefs.current.map((component,i) => component.current.update());
+
+        return new Promise((resolve) => {
+            let c = 10;
+            while (List.length > 0) {
+
+                // this.nodeRefs.current[tmp.id].current.update();
+                let tmp = List.shift();
+                const grid_copy = this.state.grid.slice();
+                const id = setInterval(() => {
+
+                    if (tmp.isWat != 'pathNode' && tmp.isWat != 'startNode' && tmp != null) {
+                        this.nodeRefs.current[tmp.id].current.update();
+
+                        document.getElementById(tmp.id).className = 'node progressPathNode';
+
+                        grid_copy[tmp.id].isWat = "progressPathNode";
+
+
+                    }
+
+                    if (List.length < 1) {
+
+
+                        clearInterval(id);
+                    }
+
+                }, 10);
+
+
+            }
+
+            setTimeout(resolve, 1000);
         });
-       
+        this.setState({ grid: grid_copy });
     }
-    componentDidMount(){
-        
-        window.addEventListener("resize", this.resize.bind(this));
-        this.resize();
-        let dim = this.setDimensions();
-        let row = dim[0];
-        let col = dim[1];
-        const grid = getInitialGrid(row,col);
-        this.setState({grid})
-        
+
+    setPathNodes(nodes) {
+
+        const pathnodes = nodes;
+        if (nodes.length == 0) {
+            window.cancelAnimationFrame(this.animationID);
+            return;
+        }
+
+        const gridNode = nodes.shift().id;
+        const tempNode = this.state.grid[gridNode];
+
+        if ((tempNode.isWat !== "progressPathNode" && tempNode.isWat != "node") || tempNode.isWat == "pathNode") {
+            console.log(tempNode.isWat);
+            this.animationID = window.requestAnimationFrame(() => this.setPathNodes(nodes));
+        } else if (pathnodes.length >= 1) {
+            tempNode.isWat = "pathNode";
+        }
+
+        this.setState({
+            grid: [
+                ...this.state.grid.slice(0, gridNode),
+                Object.assign({}, this.state.grid[gridNode], tempNode),
+                ...this.state.grid.slice(gridNode + 1)
+            ]
+        });
+
+        this.animationID = window.requestAnimationFrame(() => this.setPathNodes(nodes));
+
     }
+    
 
     resize() {
         this.clearState();
@@ -157,26 +213,26 @@ async handleprogressAnimation(pathprogessList,pathNodes){
        
         let screenW = window.innerWidth;
         let screenH = window.innerHeight;
-        if(screenW > 1200 && screenH > 947){
-            this.setState({gridWidth:1200});
-            this.setState({gridHeight:800});
+        if(screenW > 1400 && screenH > 947){
+            this.setState({gridWidth:1220});
+            this.setState({gridHeight:820});
             this.clearState;
-            return [40,60];
+            return [41,61];
         }
-        if(screenW > 1000 && screenH > 689){
-            this.setState({gridWidth:1000});
-            this.setState({gridHeight:560});
-            return [28,50];
+        if(screenW > 1080 && screenH > 689){
+            this.setState({gridWidth:1020});
+            this.setState({gridHeight:580});
+            return [29,51];
         }
         if(screenW > 800 && screenH > 600){
-            this.setState({gridWidth:800});
-            this.setState({gridHeight:460});
-            return [23,40];
+            this.setState({gridWidth:820});
+            this.setState({gridHeight:500});
+            return [25,41];
         }
         if(screenW > 420 && screenH > 560){
-            this.setState({gridWidth:400});
-            this.setState({gridHeight:500});
-            return [25,20];
+            this.setState({gridWidth:420});
+            this.setState({gridHeight:540});
+            return [27,21];
         }
         else{
             this.setState({gridWidth:200});
@@ -189,7 +245,7 @@ async handleprogressAnimation(pathprogessList,pathNodes){
     }
     
     addSelectedNode(nodeType,node){
-        console.log(this.state.grid);
+        
          let count = this.state.coloredNodeCount+1;
          this.setState({coloredNodeCount:count});
          const tempNode = this.state.grid[node.id];
@@ -207,11 +263,9 @@ async handleprogressAnimation(pathprogessList,pathNodes){
         }  
     }
     removeSelectedNode(nodeType,node){
-        
+        console.table(this.state.grid);
         if(nodeType == 'goalNode' || 'startNode'){
-            const nodeLocation = node;
-            console.log(nodeType )
-           
+
             const tempNode = this.state.grid[node.id];
          tempNode.isWat = 'node';
          this.setState({
@@ -236,51 +290,8 @@ async handleprogressAnimation(pathprogessList,pathNodes){
        this.setPathNodes(nodes); 
      
     }
-    setPathNodes (nodes){
-       
-        const pathnodes = nodes;
-        if(nodes.length == 0){   
-            window.cancelAnimationFrame(this.animationID);
-            return;
-            }   
-        
-       // for(let i = 0; i < pathnodes.length;++i){
-           
-         //const tempNode = this.state.grid[pathnodes[i].id];
-       
-         const gridNode = nodes.shift().id;
-         const tempNode = this.state.grid[gridNode];
-         
-         if(tempNode.isWat != "node" || tempNode.isWat == "pathNode"){
-            console.log(tempNode);
-            this.animationID = window.requestAnimationFrame(() => this.setPathNodes(nodes));
-         }else if(pathnodes.length >= 1){
-            tempNode.isWat = "pathNode";
-        }//else{
-        //     tempNode.isWat = "progressPathNode";
-        // }
-        
-    //     this.setState({
-    //     grid: [
-    //        ...this.state.grid.slice(0,pathnodes[i].id),
-    //        Object.assign({}, this.state.grid[pathnodes[i].id], tempNode),
-    //        ...this.state.grid.slice(pathnodes[i].id+1)
-    //     ]
-    //   });
 
-    this.setState({
-        grid: [
-           ...this.state.grid.slice(0,gridNode),
-           Object.assign({}, this.state.grid[gridNode], tempNode),
-           ...this.state.grid.slice(gridNode+1)
-        ]
-      });
- 
-      this.animationID = window.requestAnimationFrame(() => this.setPathNodes(nodes));
-      
-       
-       // } 
-    }
+   
 
     render() {
         const { grid } = this.state;
@@ -292,7 +303,7 @@ async handleprogressAnimation(pathprogessList,pathNodes){
 
         return (
             <div className = 'box' id="tag">
-            
+        
             
                 <div className="grid" style = {{width:this.state.gridWidth,height:this.state.gridHeight}} onMouseDown = {this.handleMouseDown} onMouseUp = {this.handleMouseUp} >
 
@@ -315,7 +326,9 @@ async handleprogressAnimation(pathprogessList,pathNodes){
                 startNode = {this.state.startNode} 
                 goalNode = {this.state.goalNode}
                 clearGrid = {this.clearState}
-                onWallChange = {this.handleWallChange} 
+                addNode = {this.addSelectedNode}
+                removeNode = {this.removeSelectedNode}
+                onWallChange = {this.setPathNodes}
                 gridHeight = {this.state.gridHeight}
                 gridWidth = {this.state.gridWidth}
                 animateProgress = {this.handleprogressAnimation}
@@ -343,13 +356,13 @@ const getInitialGrid = (srow,scol) => {
         }
        
     }
+   
     return nodeGrid;
 
    
 };
 const createNode = (col,row, id) => {
-   
-    
+  
     return {
         row,
         col,
@@ -357,4 +370,7 @@ const createNode = (col,row, id) => {
         id,
         
     };
+    
+
+    
 };

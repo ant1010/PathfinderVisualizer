@@ -1,4 +1,7 @@
 .footer{
-    color:white;
-    background: blue;
+    color:rgb(124, 214, 241);
+    font-size: 25px;
+    background: black;
+    outline: white;
+    position: relative;
 }

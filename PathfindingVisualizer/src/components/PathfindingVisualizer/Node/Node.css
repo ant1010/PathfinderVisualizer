@@ -49,29 +49,35 @@ clear:none;
 .progressPathNode{
    
     display: inline-block;
-    border-radius: 50px;
+    border-radius: 3px;
     opacity:1;
-    background: rgba(0,0,0,.5);
+    
     animation: 
     pulse2
     1s
     ease-out
     1.2s
     alternate
-    infinite
+    3
     none
     running;
+   background-color: rgba(213, 240, 252, 0.808);
 }
+
 @keyframes pulse2 {
     0% {
         outline: 1px solid rgb(0, 0, 0); 
+        background-color: rgb(116, 233, 241);
+        
     }
     50%{
         outline: 3px dotted rgba(38, 230, 255, 0.897); 
+        
     }
     100% {
         /* outline: 3px solid rgba(17, 109, 121, 0.897);   */
         outline: 1px dotted rgba(0, 0, 0, 0.897);
+       background-color: black;
     }
     
 }
