@@ -1,0 +1,15 @@
+.header{
+    color:white;
+    text-align: center;
+    width: 100%;
+    height:auto;
+    background-color: black;
+    position: sticky;
+    top: 0;
+
+    
+}
+.logo{
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+}

@@ -1,0 +1,31 @@
+
+.grid {
+ 
+  
+  display:block;
+  color: white;
+  padding:0px;
+  margin: 0px;
+  float:left;
+  clear:none;
+  height:auto;
+   /* background-color: rgb(4, 76, 124); */
+  
+  
+  
+ 
+  
+    
+}
+.box{
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+ justify-content: center;
+  align-items: center;
+  padding-right: 10vh;
+  
+    
+   
+}
+
