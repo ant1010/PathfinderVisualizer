@@ -15,6 +15,7 @@ export default class PathfinderAlgorithms extends Component {
         }
         this.handleClick = this.handleClick.bind(this);
         this.algoOne = this.algoOne.bind(this);
+        this.handlePopup = this.handlePopup.bind(this);
 
     }
     componentDidMount(){
@@ -45,6 +46,7 @@ export default class PathfinderAlgorithms extends Component {
     }
     generateKruskalMaze = () => {
         if(this.state.mazePressed === "button"){
+        this.props.clearGrid();
         this.setState({mazePressed:"button_maze"})
         }else{
             
@@ -172,13 +174,14 @@ export default class PathfinderAlgorithms extends Component {
         const startNode = this.props.startNode;
         const Q = [];
         const nodeCount = (this.props.gridWidth / 20) * (this.props.gridHeight / 20);
-        const dist = Array(nodeCount).fill(Number.MAX_VALUE);
+        const dist = Array(nodeCount).fill(Infinity);
+        dist[startNode] = 0;
         const S = Array(0).fill(0);
-        let foundPath = "false";
+        let foundPath = false;
         Q.push([startNode, 0]);
-
+       
         let pathprogressList = [];
-
+        console.table(dist);
         while (Q.length != 0) {
             let shortesStep = Q.shift();
             let current = shortesStep[0];
@@ -190,19 +193,32 @@ export default class PathfinderAlgorithms extends Component {
             }
 
             adj.forEach(node => {
-
+                
                 if (node[1] >= 0 && node[1] < nodeCount) {
-
+                    let weight = 1;
+                if(this.props.grid[node[1]].isWat == "weightNode"){
+                    weight = 7;
+                }
                     if (this.props.grid[node[1]].isWat == 'wallNode') {
                         dist[node[1]] = null;
                         return;
                     }
-                    let time = null;
+                     let time = dist[current] + weight;
+                    // if(this.props.grid[node[1]].isWat == 'weightNode'){
+                       
+                    //     let time = dist[node[1]] + 100;
+                        
+                    // }else if (node[0] == "diagonal") {
+                    //      console.log("what");
+                    //     time = dist[node[1]] + 1;
+                    // }else{
+                       
+                       
+                       
+                    // }
                     
-                    if (node[0] != "diagonal") {
-                        let time = dist[current] + 1;
-                    }
-                    if (time < dist[node[1]]) {
+                    console.log(Q.length + " " + time + "; " +dist[node[1]] )
+                    if (time < dist[node[1]] ) {
                         dist[node[1]] = time;
                         S[node[1]] = current;
                         Q.push([node[1], time]);
@@ -221,7 +237,9 @@ export default class PathfinderAlgorithms extends Component {
 
 
         }
-        if (foundPath == "false") {
+      
+        if (foundPath == false) {
+              console.log("waht");
             this.handlePopup();
             return;
         }
@@ -282,7 +300,8 @@ export default class PathfinderAlgorithms extends Component {
         
                 return adj;
     }
-   handlePopup =()=> {
+   handlePopup = () => {
+      
         this.setState({
          seen: !this.state.seen
         });
@@ -303,20 +322,20 @@ export default class PathfinderAlgorithms extends Component {
                 </button>
                 <button className = "button button_info" onClick = {this.handleClick('info')} > ?
                 </button>
-                {this.state.seen ? <div className="modal">
-        <div className="modal_content">
+                {this.state.seen ? <div className="modal1">
+        <div className="modal_content1">
         
           <span className="close" onClick={this.handlePopup}>
 
             &times;
             
           </span>
-           <h1>Goal node is unreachable 😰 </h1>
+           <h1>There are no paths to goal node. 😰 </h1>
           </div>
          
           </div>  : null}
                   
-             {this.state.info ? <Footer></Footer>:null}  
+             {this.state.info ? <Footer ></Footer>:null}  
  
                
             </div>

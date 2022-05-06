@@ -94,10 +94,16 @@ export default class node extends Component {
     }
    
     }
+    onDoubleClick = () =>{
+        console.log("hello");
+        this.setState({isWat:'weightNode'});
+        this.props.incrementCount('weightNode',this.props.node);
+        return;
+    }
    
     render(){
        const node = this.props.node;
        
-        return <div className={`node ${node.isWat}`}  id = {this.props.node.id} onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}></div>;
+        return <div className={`node ${this.props.isWat}`}  id = {this.props.node.id} onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}onDoubleClick={this.onDoubleClick}></div>;
     }
 }

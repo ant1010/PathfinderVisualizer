@@ -5,7 +5,6 @@ import './PathfindingVisualizer.css';
 
 
 
-
 const initialState = {
     grid: [],
     goalNode: null,
@@ -28,6 +27,7 @@ export default class PathfindingVisualizer extends Component {
             wallNode:[],
             gridWidth: 800,
             gridHeight:460,
+            tab: 'one',
             
            
            
@@ -47,8 +47,13 @@ export default class PathfindingVisualizer extends Component {
         let dim = this.setDimensions();
         let row = dim[0];
         let col = dim[1];
+        if(this.props.tabState == null){
         const grid = getInitialGrid(row,col);
         this.setState({grid})
+        }else{
+            console.log(this.props.tabState);
+            this.setState({...this.props.tabState});
+        }
         
        
     }
@@ -77,7 +82,7 @@ export default class PathfindingVisualizer extends Component {
             }
           
         }
-        console.table(grid_copy);
+       
         this.setState({ grid: grid_copy });
        
         if(exception !== "keep Maze" ){
@@ -143,7 +148,7 @@ export default class PathfindingVisualizer extends Component {
                 const grid_copy = this.state.grid.slice();
                 const id = setInterval(() => {
 
-                    if (tmp.isWat != 'pathNode' && tmp.isWat != 'startNode' && tmp != null) {
+                    if (tmp.isWat == 'node' ) {
                         this.nodeRefs.current[tmp.id].current.update();
 
                         document.getElementById(tmp.id).className = 'node progressPathNode';
@@ -242,7 +247,9 @@ export default class PathfindingVisualizer extends Component {
     }
     componentWillUnmount() {
         window.removeEventListener("resize", this.resize.bind(this));
+        this.props.componentUnmountCallback(this.state,this.props.tabId);
     }
+   
     
     addSelectedNode(nodeType,node){
         
@@ -263,7 +270,7 @@ export default class PathfindingVisualizer extends Component {
         }  
     }
     removeSelectedNode(nodeType,node){
-        console.table(this.state.grid);
+       
         if(nodeType == 'goalNode' || 'startNode'){
 
             const tempNode = this.state.grid[node.id];
@@ -291,7 +298,6 @@ export default class PathfindingVisualizer extends Component {
      
     }
 
-   
 
     render() {
         const { grid } = this.state;
@@ -303,9 +309,10 @@ export default class PathfindingVisualizer extends Component {
 
         return (
             <div className = 'box' id="tag">
-        
+           
+       
             
-                <div className="grid" style = {{width:this.state.gridWidth,height:this.state.gridHeight}} onMouseDown = {this.handleMouseDown} onMouseUp = {this.handleMouseUp} >
+             <div className="grid" style = {{width:this.state.gridWidth,height:this.state.gridHeight}} onMouseDown = {this.handleMouseDown} onMouseUp = {this.handleMouseUp} >
 
                     {grid.map((node,id) => { return <Node 
                     
@@ -335,8 +342,8 @@ export default class PathfindingVisualizer extends Component {
                 >
                 }
                 </PathfinderAlgorithms>
-                </div>
-               
+                </div> 
+              
                
             </div>
 

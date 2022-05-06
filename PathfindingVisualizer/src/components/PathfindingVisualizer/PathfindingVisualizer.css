@@ -8,19 +8,24 @@
   margin: 0px;
   float:left;
   clear:none;
-  /* background-color: rgb(4, 76, 124);
+  height:auto;
+   /* background-color: rgb(4, 76, 124); */
   
   
-  */
+  
  
   
     
 }
 .box{
-    display: flex;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
  justify-content: center;
   align-items: center;
-    width:100vw;
-    color:white;
+  padding-right: 10vh;
+  
+    
+   
 }
 
