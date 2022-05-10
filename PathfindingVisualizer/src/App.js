@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
-
 import './App.css';
 import PathfindingVisualizer from './components/PathfindingVisualizer/PathfindingVisualizer';
-//import {Box, createTheme} from '@mui/material/Box';
 import { Box, ThemeProvider, createTheme } from '@mui/system'
 import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
 export default class App extends Component {
     constructor(props){
         super(props);
@@ -25,7 +21,7 @@ export default class App extends Component {
           this.childComponentWillUnmount = this.childComponentWillUnmount.bind(this);
     }
     componentDidMount(){
-        console.log("re- rendered");
+        
         this.handleNewTab();
     }
     childComponentWillUnmount(data, tabId) {
@@ -75,6 +71,7 @@ export default class App extends Component {
 
 
         } else {
+            this.setState({ tab: "0" });
             return;
         }
 

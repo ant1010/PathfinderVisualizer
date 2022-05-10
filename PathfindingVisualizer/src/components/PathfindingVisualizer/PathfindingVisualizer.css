@@ -20,10 +20,11 @@
 .box{
   margin: 0px;
   padding: 0px;
-  display: flex;
+  display: inline-block;
  justify-content: center;
   align-items: center;
-  padding-right: 10vh;
+
+  padding-left: 10vh;
   
     
    

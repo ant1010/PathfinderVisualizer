@@ -150,12 +150,19 @@ export default class PathfindingVisualizer extends Component {
 
                     if (tmp.isWat == 'node' ) {
                         this.nodeRefs.current[tmp.id].current.update();
-
+                      
                         document.getElementById(tmp.id).className = 'node progressPathNode';
-
+                       
+                        
+                        
                         grid_copy[tmp.id].isWat = "progressPathNode";
-
-
+                        if(this.state.gridWidth < 350){
+                           
+                              this.setState({ grid: grid_copy });
+                              this.setState({ grid: grid_copy });
+                              this.setState({ grid: grid_copy });
+                        }
+                      
                     }
 
                     if (List.length < 1) {
@@ -234,15 +241,15 @@ export default class PathfindingVisualizer extends Component {
             this.setState({gridHeight:500});
             return [25,41];
         }
-        if(screenW > 420 && screenH > 560){
+        if(screenW > 565 && screenH > 560){
             this.setState({gridWidth:420});
             this.setState({gridHeight:540});
             return [27,21];
         }
         else{
-            this.setState({gridWidth:200});
-            this.setState({gridHeight:300});
-            return [15,10];
+            this.setState({gridWidth:300});
+            this.setState({gridHeight:380});
+            return [19,15];
         }
     }
     componentWillUnmount() {
