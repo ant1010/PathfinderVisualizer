@@ -181,7 +181,7 @@ export default class PathfinderAlgorithms extends Component {
         Q.push([startNode, 0]);
        
         let pathprogressList = [];
-        console.table(dist);
+       
         while (Q.length != 0) {
             let shortesStep = Q.shift();
             let current = shortesStep[0];
@@ -217,7 +217,7 @@ export default class PathfinderAlgorithms extends Component {
                        
                     // }
                     
-                    console.log(Q.length + " " + time + "; " +dist[node[1]] )
+                    
                     if (time < dist[node[1]] ) {
                         dist[node[1]] = time;
                         S[node[1]] = current;
@@ -239,7 +239,7 @@ export default class PathfinderAlgorithms extends Component {
         }
       
         if (foundPath == false) {
-              console.log("waht");
+             
             this.handlePopup();
             return;
         }

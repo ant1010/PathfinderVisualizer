@@ -3,10 +3,10 @@
     width: 17px;
     height: 17px;
     display:inline-flex;
-    margin:1.5px;
+    margin:1px;
     padding-left: 0px;
     border-radius:50%;
-    outline: .5px solid rgba(38, 230, 255, 0.897);
+    border: .5px solid rgba(38, 230, 255, 0.897);
     background-color:black;
     font-size: 10px;
     float:left;
