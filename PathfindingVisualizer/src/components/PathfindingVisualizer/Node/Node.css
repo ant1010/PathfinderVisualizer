@@ -23,8 +23,8 @@
   }
   @media screen and (max-width: 600px) {
     .node {
-        width: 5em;
-        height: 5em;
+        width: 3.5em;
+        height:3.5em;
         font-size: .36em;
     }
     
