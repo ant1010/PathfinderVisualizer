@@ -247,14 +247,14 @@ export default class PathfindingVisualizer extends Component {
             return [25,41];
         }
         if(screenW > 565 && screenH > 700){
-            this.setState({gridWidth:600});
-            this.setState({gridHeight:800});
-            return [30,34];
+            this.setState({gridWidth:500});
+            this.setState({gridHeight:820});
+            return [41,25];
         }
         if(screenW < 565 && screenH > 560){
             this.setState({gridWidth:400});
             this.setState({gridHeight:800});
-            return [24,12];
+            return [23,13];
         }
         else{
             this.setState({gridWidth:300});

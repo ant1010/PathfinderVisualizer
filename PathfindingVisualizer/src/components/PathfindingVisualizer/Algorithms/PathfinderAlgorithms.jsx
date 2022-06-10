@@ -64,9 +64,9 @@ export default class PathfinderAlgorithms extends Component {
             .map(({ value }) => value)
       
         var arr = [];
-        const nodeCount = (this.props.gridWidth / 20) * (this.props.gridHeight / 20);
-        const rows = (this.props.gridHeight / 20);
-        const cols = (this.props.gridWidth / 20);
+        const nodeCount = (this.props.columns) * (this.props.rows);
+        const rows = (this.props.rows);
+        const cols = (this.props.columns);
         let parent = Array(nodeCount).fill(null);;
        // Initializes the data structure such that all nodes have themeselves as parents.
         this.props.grid.forEach(e => (parent[e.id]=e.id));
