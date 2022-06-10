@@ -18,14 +18,14 @@ export default class node extends Component {
     }
 
     componentDidMount(){
-       // this.setState({isWat:this.props.node.isWat})
+       
        this.setState({isWat:this.props.isWat});
         
     }
     handleMouseDown = (node) =>
     {
         
-       //node.preventDefault;
+    
        
        this.props.handleMouseDown(node);
     

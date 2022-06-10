@@ -25,8 +25,10 @@ export default class PathfindingVisualizer extends Component {
             goalNode: null ,
             startNode: null,
             wallNode:[],
-            gridWidth: 800,
-            gridHeight:460,
+            gridWidth:0,
+            gridHeight:0,
+            columns:0,
+            rows:0,
             tab: 'one',
             
            
@@ -47,6 +49,8 @@ export default class PathfindingVisualizer extends Component {
         let dim = this.setDimensions();
         let row = dim[0];
         let col = dim[1];
+        this.setState({rows:row});
+        this.setState({columns:col});
         if(this.props.tabState == null){
         const grid = getInitialGrid(row,col);
         this.setState({grid})
@@ -225,6 +229,7 @@ export default class PathfindingVisualizer extends Component {
        
         let screenW = window.innerWidth;
         let screenH = window.innerHeight;
+        console.log("w: " + screenW + '\n' + "H: " + screenH);
         if(screenW > 1400 && screenH > 947){
             this.setState({gridWidth:1220});
             this.setState({gridHeight:820});
@@ -241,10 +246,15 @@ export default class PathfindingVisualizer extends Component {
             this.setState({gridHeight:500});
             return [25,41];
         }
-        if(screenW > 565 && screenH > 560){
-            this.setState({gridWidth:420});
-            this.setState({gridHeight:540});
-            return [27,21];
+        if(screenW > 565 && screenH > 700){
+            this.setState({gridWidth:600});
+            this.setState({gridHeight:800});
+            return [30,34];
+        }
+        if(screenW < 565 && screenH > 560){
+            this.setState({gridWidth:400});
+            this.setState({gridHeight:800});
+            return [24,12];
         }
         else{
             this.setState({gridWidth:300});
@@ -335,6 +345,7 @@ export default class PathfindingVisualizer extends Component {
                     startNode={this.state.startNode} 
                     isWat = {node.isWat}> 
                     </Node>})}
+                    
                 <PathfinderAlgorithms  
                 grid = {this.state.grid} 
                 startNode = {this.state.startNode} 
@@ -346,12 +357,14 @@ export default class PathfindingVisualizer extends Component {
                 gridHeight = {this.state.gridHeight}
                 gridWidth = {this.state.gridWidth}
                 animateProgress = {this.handleprogressAnimation}
+                columns = {this.state.columns}
+                rows = {this.state.rows}
                 >
                 }
                 </PathfinderAlgorithms>
+               
                 </div> 
               
-               
             </div>
 
         )

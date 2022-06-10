@@ -96,7 +96,7 @@ export default class App extends Component {
                 </div>
                 
                 <TabContext value={tab}>
-
+                   
                     <Box className="tablist" color="white">
                         <TabList selected sx={{
                             '& .MuiTab-root': {
@@ -121,11 +121,15 @@ export default class App extends Component {
 
 
                     </Box>
+                    
 
                     <div className="tab-container">
 
                     </div>
-                    {this.state.tabList.map((id, i) => { return <TabPanel value={`${i}`}><PathfindingVisualizer tabId={i} tabState={this.state.tabState[i]} componentUnmountCallback={this.childComponentWillUnmount}></PathfindingVisualizer></TabPanel> })}
+                    <div className = "gridContainer">
+                                            {this.state.tabList.map((id, i) => { return <TabPanel value={`${i}`}><PathfindingVisualizer tabId={i} tabState={this.state.tabState[i]} componentUnmountCallback={this.childComponentWillUnmount}></PathfindingVisualizer></TabPanel> })}
+
+                    </div>
 
 
                 </TabContext>
