@@ -97,6 +97,7 @@ export default class PathfindingVisualizer extends Component {
        const grid = getInitialGrid(row,col);
         this.setState({grid})
         }
+       
     }
 
     handleMouseDown = (node) =>
@@ -217,13 +218,15 @@ export default class PathfindingVisualizer extends Component {
     
 
     resize() {
-        this.clearState();
+       
         let dim = this.setDimensions();
         let row = dim[0];
         let col = dim[1];
+        this.setState({rows:row});
+        this.setState({columns:col});
         const grid = getInitialGrid(row,col);
         this.setState({grid})
-        
+         this.clearState(false);
     }
     setDimensions(){
        
