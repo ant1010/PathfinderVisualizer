@@ -1,19 +1,34 @@
 
 .node {
-    width: 17px;
-    height: 17px;
+    width: 2.9em;
+    height: 2.9em;
     display:inline-flex;
-    margin:1px;
-    padding-left: 0px;
+    margin:.1em;
+    padding-left: 0em;
     border-radius:50%;
-    border: .5px solid rgba(38, 230, 255, 0.897);
+    border: .2em solid rgba(38, 230, 255, 0.897);
     background-color:black;
-    font-size: 10px;
+    font-size: .35em;
     float:left;
-clear:none;
+    clear:none;
 
     
 }
+@media screen and (min-width: 1080px)  {
+    .node {
+        width: 2.75em;
+        height: 2.75em;
+        font-size: .37em;
+    }
+  }
+  @media screen and (max-width: 600px) {
+    .node {
+        width: 3.5em;
+        height:3.5em;
+        font-size: .36em;
+    }
+    
+  }
 @keyframes pulse {
     0% {
         outline: .5px solid rgba(38, 230, 255, 0.897); 
@@ -30,13 +45,17 @@ clear:none;
 }
 
 .startNode {
-    outline: 2px solid rgb(243, 236, 236);
+    
     display: inline-block;
     background: rgb(29, 247, 0);
+    border:transparent;
+    margin:.2em;
+   outline:.4em solid white;
+
     animation: 
     pulse-start
     .5s
-    ease-in-out
+    ease-in
     0s
     alternate
     1
@@ -45,18 +64,19 @@ clear:none;
 }
 @keyframes pulse-start {
     0% {
-        outline: 2px solid rgba(255, 255, 255, 0.897); 
+        outline-color: transparent; 
+        background-color: transparent
        
        
     }
     50%{
-        outline: 4px solid rgba(255, 253, 253, 0.897); 
+        outline-color:rgba(255, 253, 253, 0.897); 
         
-       
+       background-color: aliceblue;
        
     }
     100% {
-        outline: 0px solid rgb(255, 248, 248);  
+        outline-color: transparent;  
       
     }
     
@@ -64,7 +84,7 @@ clear:none;
 .wallNode {
    
     border-radius: 0%;
-    outline: .5px solid rgba(255, 253, 253, 0.815);
+    outline: .4em solid rgba(255, 253, 253, 0.815);
     display: inline-block;
     background:rgb(145, 142, 142);
     animation: 
@@ -87,18 +107,19 @@ running;
 	border-bottom: 17px solid rgb(214, 67, 233);
     border-radius: 0%;
     outline: .5px solid transparent;
-    display: inline-block;
+    display:inline-block;
     background:transparent;
 }
 .goalNode {
-    
-    outline: 2px solid rgb(250, 250, 250);
+    border:transparent;
+    margin:.2em;
+   outline:.4em solid white;
     display: inline-block;
     background: rgb(240, 2, 2);
     animation: 
 pulse-start
 .5s
-ease-in-out
+ease-in
 0s
 alternate
 1
@@ -125,17 +146,17 @@ running;
 
 @keyframes pulse2 {
     0% {
-        outline: 1px solid rgb(0, 0, 0); 
+        outline-color: 1px solid rgb(0, 0, 0); 
         background-color: rgb(116, 233, 241);
         
     }
     50%{
-        outline: 3px dotted rgba(38, 230, 255, 0.897); 
+        outline-color: 3px dotted rgba(38, 230, 255, 0.897); 
         
     }
     100% {
         /* outline: 3px solid rgba(17, 109, 121, 0.897);   */
-        outline: 1px dotted rgba(0, 0, 0, 0.897);
+        outline-color: 1px dotted rgba(0, 0, 0, 0.897);
        background-color: black;
     }
     
@@ -145,12 +166,14 @@ running;
     display: inline-block;
     border-radius: 50px;
     background: rgba(38, 230, 255, 0.897);
-    outline: 2px white;
+    outline: 2px solid;
+    outline-color: transparent;
+    
     animation: 
     pulse1
-    1s
+    1.5s
     ease-out
-    1.2s
+    0s
     alternate
     infinite
     none
@@ -159,13 +182,14 @@ running;
 }
 @keyframes pulse1 {
     0% {
-        outline: 2px solid rgba(14, 17, 19, 0.897); 
+        outline-color: transparent; 
     }
     50%{
         outline: 4px solid rgba(228, 235, 236, 0.897); 
+        outline-color:white;
     }
     100% {
-        outline: 3px solid rgba(17, 109, 121, 0.897);  
+        outline-color: transparent;  
     }
     
 }

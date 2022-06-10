@@ -1,29 +1,32 @@
 
 .App{
     width:100vw;
-   height: 100px;
-    
+    height: 100px;
+    background-color: rgb(0, 0, 0);
 
 }
+
+
 .tab-hidden{
     visibility: hidden;
 }
 
 .tablist{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-   height:2vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   height:5vh;
    width:auto;
    padding-right:10vw;
    background-color: rgb(0, 0, 0);
    color:rgba(226, 235, 236, 0.897);
- 
    
+
+  
 
 }
 .tab-container{
-     position:relative;
+   
      color:rgba(238, 246, 247, 0.897);
      
      
@@ -38,8 +41,8 @@
     float:left;
     
     margin-right:0vw;
-    padding-top:5vh;
-    background-color: black;
+    padding-top:0vh;
+    background-color: rgb(0, 0, 0);
 
 }
 

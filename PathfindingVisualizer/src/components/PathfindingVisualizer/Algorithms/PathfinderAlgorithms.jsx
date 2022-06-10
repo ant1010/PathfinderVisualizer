@@ -127,8 +127,8 @@ export default class PathfinderAlgorithms extends Component {
         return a;
     }
     findvalidEdges = () => {
-        const col = (this.props.gridWidth / 20);
-        const row = (this.props.gridHeight / 20);
+        const col = (this.props.columns);
+        const row = (this.props.rows);
         let i = 0;
         let edges = [];
         let nodes = [];
@@ -170,10 +170,11 @@ export default class PathfinderAlgorithms extends Component {
     }
 
     algoOne() {
+    
         const goalNode = this.props.goalNode;
         const startNode = this.props.startNode;
         const Q = [];
-        const nodeCount = (this.props.gridWidth / 20) * (this.props.gridHeight / 20);
+        const nodeCount = (this.props.columns) * (this.props.rows);
         const dist = Array(nodeCount).fill(Infinity);
         dist[startNode] = 0;
         const S = Array(0).fill(0);
@@ -193,7 +194,7 @@ export default class PathfinderAlgorithms extends Component {
             }
 
             adj.forEach(node => {
-                
+                console.log(this.props.grid[node[1]]);
                 if (node[1] >= 0 && node[1] < nodeCount) {
                     let weight = 1;
                 if(this.props.grid[node[1]].isWat == "weightNode"){
@@ -267,8 +268,8 @@ export default class PathfinderAlgorithms extends Component {
     }
     generateAdjacencyList(current){
        
-        let row = this.props.gridHeight/20 ;
-        let col = this.props.gridWidth/20 ;
+        let row = this.props.rows ;
+        let col = this.props.columns ;
         const nodeCount = row*col;
         
         let adj = [];
@@ -312,8 +313,8 @@ export default class PathfinderAlgorithms extends Component {
 
         return (
            
-            <div>
-
+            <div className = "button-box">
+                
                 <button className = "button" onClick={this.handleClick('Dijkstra')} > Dijkstra
                 </button>
                 <button className = "button" onClick={this.handleClick('reset')} > Clear
@@ -322,6 +323,7 @@ export default class PathfinderAlgorithms extends Component {
                 </button>
                 <button className = "button button_info" onClick = {this.handleClick('info')} > ?
                 </button>
+                
                 {this.state.seen ? <div className="modal1">
         <div className="modal_content1">
         
