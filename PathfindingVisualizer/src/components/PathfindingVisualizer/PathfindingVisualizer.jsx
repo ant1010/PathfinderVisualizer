@@ -2,6 +2,7 @@ import React,{Component,useRef} from 'react'
 import Node from './Node/Node'
 import PathfinderAlgorithms from './Algorithms/PathfinderAlgorithms'
 import './PathfindingVisualizer.css';
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 
 
@@ -240,31 +241,44 @@ export default class PathfindingVisualizer extends Component {
             return [41,61];
         }
         if(screenW > 1080 && screenH > 689){
+            console.log("smallest90");
             this.setState({gridWidth:1020});
             this.setState({gridHeight:580});
             return [29,51];
         }
         if(screenW > 800 && screenH > 600){
+            console.log("smallest0");
             this.setState({gridWidth:820});
             this.setState({gridHeight:500});
             return [25,41];
         }
         if(screenW > 565 && screenH > 850){
+            console.log("smallest78");
             this.setState({gridWidth:500});
             this.setState({gridHeight:820});
             return [41,25];
         }
-         if(screenW < 565 && screenH > 560){
+         if((screenW < 565 && screenH > 560) && isMobile){
              console.log("second smallest");
             this.setState({gridWidth:400});
             this.setState({gridHeight:800});
             return [23,13];
         }
-        else{
+        else if(isMobile){
             console.log("smallest");
             this.setState({gridWidth:300});
             this.setState({gridHeight:380});
             return [19,15];
+        }else if(screenW > 619 && screenH > 664){
+            console.log("smallestb4");
+            this.setState({gridWidth:620});
+            this.setState({gridHeight:500});
+            return [25,31];
+        }else if(screenW < 619 || screenH < 688){
+            console.log("smallestb");
+            this.setState({gridWidth:420});
+            this.setState({gridHeight:300});
+            return [15,21];
         }
         // if(screenW < 565 && screenH > 560){
         //     this.setState({gridWidth:400});
@@ -336,15 +350,19 @@ export default class PathfindingVisualizer extends Component {
        
         const myRefs = this.nodeRefs;
         this.nodeRefs.current = grid.map((element, i) => myRefs.current[i] ?? React.createRef());
-       
+        let gridClass = "grid"
+        if(isMobile){
+            gridClass = "gridMobile";
+        }
 
 
         return (
             <div className = 'box' id="tag">
            
+
        
             
-             <div className="grid" style = {{width:this.state.gridWidth,height:this.state.gridHeight}} onMouseDown = {this.handleMouseDown} onMouseUp = {this.handleMouseUp} >
+             <div className= {gridClass} style = {{width:this.state.gridWidth,height:this.state.gridHeight}} onMouseDown = {this.handleMouseDown} onMouseUp = {this.handleMouseUp} >
 
                     {grid.map((node,id) => { return <Node 
                     

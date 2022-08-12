@@ -1,5 +1,6 @@
 import React, {Component,useEffect} from 'react';
 import './Node.css';
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 export default class node extends Component {
     constructor(props){
@@ -102,8 +103,12 @@ export default class node extends Component {
     }
    
     render(){
+        let nodeClass = "node";
+        if(isMobile){
+            nodeClass = "nodeMobile";
+        }
        const node = this.props.node;
        
-        return <div className={`node ${this.props.isWat}`}  id = {this.props.node.id} onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}onDoubleClick={this.onDoubleClick}></div>;
+        return <div className={`${nodeClass} ${this.props.isWat}`}  id = {this.props.node.id} onMouseEnter = { () => this.handleMouseEnter(node)}onClick={ this.handleClick}onDoubleClick={this.onDoubleClick}></div>;
     }
 }

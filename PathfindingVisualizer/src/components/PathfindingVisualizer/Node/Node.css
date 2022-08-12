@@ -34,20 +34,26 @@
         outline: .3em solid rgba(255, 253, 253, 0.815);
     }
   }
-  @media screen and (max-width: 600px) {
-    .node {
+  
+    .nodeMobile {
         width: 2.75em;
         height:2.75em;
         margin:.1em;
         padding-left: 0em;
         font-size: .35em;
         border: .2em solid rgba(38, 230, 255, 0.897);
-        
+        display:inline-flex;
+   
+   
+    background-color:black;
+    border-radius:50%;
+    float:left;
+    clear:none;
     }
     .wallNode {
         outline: .3em solid rgba(255, 253, 253, 0.815);
     }
-  }
+  
     
   
 @keyframes pulse {
