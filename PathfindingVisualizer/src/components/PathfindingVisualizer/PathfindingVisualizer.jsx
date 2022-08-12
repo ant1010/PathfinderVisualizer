@@ -249,21 +249,33 @@ export default class PathfindingVisualizer extends Component {
             this.setState({gridHeight:500});
             return [25,41];
         }
-        if(screenW > 565 && screenH > 700){
+        if(screenW > 565 && screenH > 850){
             this.setState({gridWidth:500});
             this.setState({gridHeight:820});
             return [41,25];
         }
-        if(screenW < 565 && screenH > 560){
+         if(screenW < 565 && screenH > 560){
+             console.log("second smallest");
             this.setState({gridWidth:400});
             this.setState({gridHeight:800});
             return [23,13];
         }
         else{
+            console.log("smallest");
             this.setState({gridWidth:300});
             this.setState({gridHeight:380});
             return [19,15];
         }
+        // if(screenW < 565 && screenH > 560){
+        //     this.setState({gridWidth:400});
+        //     this.setState({gridHeight:800});
+        //     return [23,13];
+        // }
+        // else{
+        //     this.setState({gridWidth:300});
+        //     this.setState({gridHeight:380});
+        //     return [19,15];
+        // }
     }
     componentWillUnmount() {
         window.removeEventListener("resize", this.resize.bind(this));
