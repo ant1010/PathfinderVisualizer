@@ -2,7 +2,7 @@ import React,{Component,useRef} from 'react'
 import Node from './Node/Node'
 import PathfinderAlgorithms from './Algorithms/PathfinderAlgorithms'
 import './PathfindingVisualizer.css';
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import {isMobile } from 'react-device-detect';
 
 
 
