@@ -15,7 +15,9 @@ export default class PathfinderAlgorithms extends Component {
         }
         this.handleClick = this.handleClick.bind(this);
         this.algoOne = this.algoOne.bind(this);
+        this.aStar = this.aStar.bind(this);
         this.handlePopup = this.handlePopup.bind(this);
+        this.smallestPop = this.smallestPop.bind(this);
 
     }
     componentDidMount(){
@@ -42,7 +44,13 @@ export default class PathfinderAlgorithms extends Component {
             this.setState({ Data: this.props.gridData });
 
         }
-        this.algoOne();
+        if(value == "Dijkstra"){
+             this.algoOne();
+        }
+        if(value == "A-star"){
+            this.aStar();
+        }
+       
     }
     generateKruskalMaze = () => {
         if(this.state.mazePressed === "button"){
@@ -64,9 +72,9 @@ export default class PathfinderAlgorithms extends Component {
             .map(({ value }) => value)
       
         var arr = [];
-        const nodeCount = (this.props.gridWidth / 20) * (this.props.gridHeight / 20);
-        const rows = (this.props.gridHeight / 20);
-        const cols = (this.props.gridWidth / 20);
+        const nodeCount = (this.props.columns) * (this.props.rows);
+        const rows = (this.props.rows);
+        const cols = (this.props.columns);
         let parent = Array(nodeCount).fill(null);;
        // Initializes the data structure such that all nodes have themeselves as parents.
         this.props.grid.forEach(e => (parent[e.id]=e.id));
@@ -258,6 +266,216 @@ export default class PathfinderAlgorithms extends Component {
 
 
     }
+   
+    aStar(){
+       const nodeCount = (this.props.columns) * (this.props.rows);
+       let open = [];
+       let closed = [];
+       let f_value = Array(nodeCount).fill(0);;
+       let g_value = Array(nodeCount).fill(0);;
+       let inOpen = Array(nodeCount).fill(false);
+       let inClosed = Array(nodeCount).fill(false);
+       let q = null;
+       let progress = [];
+       
+        const parents = Array(nodeCount).fill(Infinity);
+     
+       //put start node in open list with f=0
+       open.push(this.props.startNode);//g,f
+       f_value[this.props.startNode] = 0;
+  
+       
+     
+        while(open.length!=0  ){
+            //console.log(open.length);
+            
+            q = open[0];
+           // console.log(JSON.stringify(open));
+           open = this.smallestPop(f_value,open);
+        
+            
+           
+            inOpen[q] = false;
+           inClosed[q] = true;
+            
+       
+
+            let adj = this.generateAdjacencyList(q);
+            //console.log("q:",q,open);
+           
+            let adjList = [];
+            for(let i = 0; i < adj.length;++i){
+                if(adj[i][1] >= 0 && adj[i][1] < this.props.grid.length ){
+
+               // console.log(adj[i][1],this.props.grid.length);
+                if(this.props.grid[adj[i][1]].isWat != "wallNode"){
+                    adjList.push(adj[i][1]);
+                                }
+                            }
+            }
+           // console.table(adj);
+            let f = 0;
+            let g = 0;
+            let h = 0;
+            for(let i = 0;i < adjList.length;++i){
+               
+              
+               if(adjList[i] == this.props.goalNode){
+                   console.log("goal!!?");
+                   parents[adjList[i]] = q;
+                 
+                  // console.log(JSON.stringify(closed));
+                   closed[adjList[i]]=true;
+                   let path =  this.generateProgressPath(  this.extractPath(parents));
+                   
+                   let progressfinal = this.generateProgressPath(progress);
+                   this.props.animateProgress(progressfinal, path);
+                   return;
+               }
+              
+                  //skip node if in Closed list  
+                 if(inClosed[adjList[i]]){
+                     continue;
+                 }
+                 
+               
+                  
+               
+              
+                  
+                    g = g_value[q] + 1;
+                    h = Math.abs(this.props.grid[adjList[i]].col - this.props.grid[this.props.goalNode].col) * 2 + Math.abs(this.props.grid[adjList[i]].row - this.props.grid[this.props.goalNode].row) * 2;
+                    f = g + h;
+                    //g value calculated better than neighbors previous g value
+                    if(g <= g_value[adjList[i]]){
+                       // console.log(adjList[i]);
+                        f_value[adjList[i]] = f;
+                        g_value[adjList[i]] = g;
+                        parents[adjList[i]] = q;
+                       
+                        //console.table(open);
+                        
+                    }
+                    //add to open list only if not currently there
+                    if(!inOpen[adjList[i]]){
+                        f_value[adjList[i]] = f;
+                        g_value[adjList[i]] = g;
+                        parents[adjList[i]] = q;
+                        progress.push(adjList[i]);
+                        open = this.queueInsert(f_value,adjList[i],open);
+                       //console.table(open);
+                       // console.table(f_value);
+                        inOpen[adjList[i]] = true;
+                    }
+                  
+       }
+     
+    }
+   
+}
+queueInsert(fvalues,node,h){
+    //console.log("queueInsert:",node,h);
+    if(h.length == 0){
+        return [node];
+    }
+    if(h=== undefined){
+        //console.log("zero");
+        return [node];
+    }
+   let heap = new Array();
+   heap = h;
+    heap.push(node);
+   
+    if(heap.length > 1){
+        let current = heap.length -1;
+        //console.log(heap[Math.floor(current/2)],heap[current]);
+        ///console.table(heap);
+        while(current >= 0 && fvalues[heap[Math.floor(current/2)-1]] > fvalues[heap[current]]){
+            
+            //console.log("second",heap[Math.floor(current/2)-1],heap[current]);
+            [heap[Math.floor(current/2)-1],  heap[current]] =  [heap[current], heap[Math.floor(current/2)-1]];
+            current = Math.floor(current/2)-1;
+           // console.log("current",current);
+           // console.table(heap);
+        }
+        return heap;
+    }
+}
+smallestPop(fvalues, heap){
+    let smallest = heap[0];
+    if (heap.length < 2){
+        return [];
+    }
+    if(heap.length > 2){
+        heap[0] = heap[heap.length-1];
+        heap.splice(heap.length - 1);
+        // console.log("pop",heap);
+
+         if(heap.length === 2 && fvalues[heap[0]] > fvalues[heap[1]]){
+             [heap[0],heap[1]]  = [heap[1],heap[0]];
+             //console.log("2switch");
+             return heap;
+         }
+         if(heap.length === 2){
+             return heap;
+         }
+        if(heap.length === 3){
+           
+            if(fvalues[heap[0]] > fvalues[heap[1]]){
+                [heap[0],heap[1]] = [heap[1],heap[0]];
+            }
+            return heap;
+        }
+        let current = 0;
+        let leftChild = current *2;
+        let rightChild = current * 2 + 1;
+
+        while(heap[leftChild] && heap[rightChild] && (fvalues[heap[current]] > fvalues[heap[leftChild]] || fvalues[heap[current]] > fvalues[heap[rightChild]])){
+          //  console.log("pop2");
+            if(fvalues[heap[leftChild]] < fvalues[heap[rightChild]]){
+                [heap[current], heap[leftChild]] = [heap[leftChild], heap[current]];
+                current = leftChild;
+            }else{
+                [heap[current], heap[rightChild]] = [heap[rightChild], heap[current]];
+                current = rightChild;
+            }
+            leftChild = current *2;
+            rightChild = current*2+1;
+
+        }
+        if(heap[rightChild] === undefined && fvalues[heap[leftChild]] < fvalues[heap[current]]){
+            [heap[current], heap[leftChild]] = [heap[leftChild], heap[current]];
+        }
+        else if(heap.length === 2){
+            
+           // console.log("pop3");
+            heap.splice(1,1);
+        }
+    }
+    //console.log("heap");
+    return heap;
+}
+    extractPath(parents){
+        let goal = this.props.goalNode;
+        let start = this.props.startNode;
+        let path = [];
+        let current = parents[goal];
+        for(let i = 0; i < parents.length;++i){
+            if(parents[current] == start){
+                console.log("found start");
+                console.log("path", path);
+                return path;
+            }else{
+                path.push(parents[current]);
+                current = parents[current];
+               // console.log(current);
+            }
+        }
+        console.log("path", path);
+        //console.log(JSON.stringify(path));
+        //console.table(parents);
+    }
+
     generateProgressPath(path){
         
         let pathNodes = [];
@@ -273,11 +491,12 @@ export default class PathfinderAlgorithms extends Component {
         const nodeCount = row*col;
         
         let adj = [];
-        
+       
         adj[0] = ["above",current-col];
         
         
         adj[1] = ["below",current+col];
+        
         
         
         //for nodes on the left edges of grid
@@ -316,6 +535,8 @@ export default class PathfinderAlgorithms extends Component {
             <div className = "button-box">
                 
                 <button className = "button" onClick={this.handleClick('Dijkstra')} > Dijkstra
+                </button>
+                <button className = "button" onClick={this.handleClick('A-star')} > A-star
                 </button>
                 <button className = "button" onClick={this.handleClick('reset')} > Clear
                 </button>

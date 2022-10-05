@@ -1,14 +1,14 @@
 
 .node {
-    width: 2.9em;
-    height: 2.9em;
+    width: 2.75em;
+    height: 2.75em;
     display:inline-flex;
     margin:.1em;
     padding-left: 0em;
-    border-radius:50%;
+    font-size: .37em;
     border: .2em solid rgba(38, 230, 255, 0.897);
     background-color:black;
-    font-size: .35em;
+    border-radius:50%;
     float:left;
     clear:none;
 
@@ -21,14 +21,41 @@
         font-size: .37em;
     }
   }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     .node {
-        width: 3.5em;
-        height:3.5em;
-        font-size: .36em;
+        width: 2.9em;
+        height:2.9em;
+        margin:.1em;
+        padding-left: 0em;
+        font-size: .35em;
+        border: .2em solid rgba(38, 230, 255, 0.897);
     }
-    
+    .wallNode {
+        outline: .3em solid rgba(255, 253, 253, 0.815);
+    }
   }
+  
+    .nodeMobile {
+        width: 2.75em;
+        height:2.75em;
+        margin:.1em;
+        padding-left: 0em;
+        font-size: .35em;
+        border: .2em solid rgba(38, 230, 255, 0.897);
+        display:inline-flex;
+   
+   
+    background-color:black;
+    border-radius:50%;
+    float:left;
+    clear:none;
+    }
+    .wallNode {
+        outline: .3em solid rgba(255, 253, 253, 0.815);
+    }
+  
+    
+  
 @keyframes pulse {
     0% {
         outline: .5px solid rgba(38, 230, 255, 0.897); 
